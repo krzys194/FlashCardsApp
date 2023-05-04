@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Excel App</title>
+  <style>
+    :root {
+      --background-color: #a8d674;
+      --button-color: #4d4d4d;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      font-size: 3rem;
+      color: #4d4d4d;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: #4d4d4d;
+      margin-top: 2rem;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px solid var(--background-color);
+      margin: 1.5rem auto;
+      width: 80%;
+    }
+
+    ul {
+      display: flex;
+      justify-content: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      margin: 1rem;
+    }
+
+    a {
+      color: var(--button-color);
+      text-decoration: none;
+      font-size: 1.5rem;
+      transition: all 0.3s ease-in-out;
+      padding: 1.5rem 3rem;
+      border: 2px solid var(--button-color);
+      border-radius: 5px;
+      display: block;
+      text-align: center;
+    }
+
+    a:hover {
+      color: #fff;
+      background-color: var(--button-color);
+    }
+
+    form {
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    input[type=file] {
+      display: block;
+      margin: 1rem auto;
+      font-size: 1.5rem;
+      border-radius: 5px;
+      border: none;
+      padding: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      background-color: var(--button-color);
+      color: #fff;
+    }
+
+    button[type=submit] {
+      display: block;
+      margin: 1rem auto;
+      padding: 1.5rem 3rem;
+      font-size: 1.5rem;
+      background-color: var(--button-color);
+      border: 2px solid var(--button-color);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    button[type=submit]:hover {
+      background-color: #a8d674;
+      color: var(--button-color);
+      border-color: #a8d674;
+    }
+
+    p {
+      text-align: center;
+      color: #4d4d4d;
+      font-size: 1.5rem;
+      margin: 2rem 0;
+    }
+
+    @media screen and (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem;
+        margin-top: 30px;
+      }
+
+      h2 {
+        font-size: 1.8rem;
+        margin-top: 1.5rem;
+      }
+
+      ul {
+        flex-wrap: wrap;
+      }
+
+      li {
+        margin: 0.5rem;
+      }
+
+      a {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+      }
+
+      input[type=file] {
+        font-size: 1.2rem;
+        padding: 1rem;
+      }
+
+      button[type=submit] {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+      }
+
+      p {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media screen and (max-width: 576px) {
+      h1 {
+        font-size: 2rem;
+        margin-top: 20px;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-top: 1rem;
+      }
+
+      a {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+
+      input[type=file] {
+        font-size: 1rem;
+        padding: 0.8rem;
+      }
+
+      button[type=submit] {
+        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+        margin: 1rem 0;
+      }
+    }
+  </style>
+</head>
+<body>
+<h1>Naucz się nowych słów!</h1>
+<hr>
+<ul>
+  <li><a href="/list" id="listLink">Lista</a></li>
+  <li><a href="/flashCards" id="flashCardsLink">Fiszki</a></li>
+  <li><a href="/quiz" id="quizLink">Quiz</a></li>
+
+</ul>
+
+<form method="post" action="/upload" enctype="multipart/form-data">
+  <div>
+    <input type="file" name="file" required>
+    <button type="submit">Załaduj</button>
+  </div>
+</form>
+<hr>
+<p>Załadowany plik: <span th:text="${fileName}"></span></p>
+<script>
+
+</script>
+</body>
+</html>

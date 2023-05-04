@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <title>Flashcards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root {
+            --background-color: #a8d674;
+            --button-color: #4d4d4d;
+        }
+
+        body {
+            background-color: var(--background-color);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100vh;
+            font-size: 1.5rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .head {
+            height: 10vh;
+            background-color: #4D4D4D;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #333333;
+            padding: 0 20px;
+        }
+
+        #quiz-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+
+        #quiz {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #quiz p {
+            text-align: center;
+        }
+
+        #quiz button {
+            margin: 10px 0;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            min-width: 150px;
+        }
+
+        #quiz button:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #button-container {
+            background-color: #4d4d4d;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        button {
+            font-size: 1.5rem;
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #4d4d4d;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #back-button {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 10px;
+            font-size: 2rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #4d4d4d;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #back-button:hover {
+            transform: translateX(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+
+        @media screen and (max-width: 768px) {
+            /* adjust header height and font size */
+            .head {
+                height: 8vh;
+                font-size: 1.2rem;
+            }
+
+            /* center quiz container */
+            #quiz-container {
+                justify-content: center;
+                padding: 0 20px;
+            }
+
+            /* decrease button font size and padding */
+            #quiz button {
+                font-size: 1rem;
+                padding: 8px 16px;
+            }
+
+            /* adjust button container margin and padding */
+            #button-container {
+                margin-top: 20px;
+                padding: 10px;
+            }
+
+            /* adjust back button font size and padding */
+            #back-button {
+                font-size: 1.5rem;
+                padding: 8px 16px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+<a href="/" id="back-button">&#8592;</a>
+<div class="head">
+    <h1>Quiz</h1>
+</div>
+<div id="quiz-container">
+    <div id="quiz">
+        <p th:text="${currentWord}"></p>
+        <button type="button" ><span th:text="${currentAnswer}"></span></button>
+        <button type="button" ><span th:text="${question1}"></span></button>
+        <button type="button" ><span th:text="${question2}"><</span></button>
+        <button type="button" ><span th:text="${question3}"><</span></button>
+
+    </div>
+</div>
+
+<div id="button-container">
+    <button type="button" onclick="nextQuiz()">Następne pytanie</button>
+    <button type="button" onclick="startFromBeginning()">Od początku</button>
+</div>
+
+<script>
+    function nextQuiz() {
+        fetch("/nextQuiz").then(function (response) {
+            if (response.ok) {
+                response.text().then(function (text) {
+                    document.documentElement.innerHTML = text;
+                    var buttons = document.getElementById("flashcard").querySelectorAll("button");
+                    for (var i = buttons.length - 1; i > 0; i--) {
+                        var j = Math.floor(Math.random() * (i + 1));
+                        var temp = buttons[i];
+                        buttons[i] = buttons[j];
+                        buttons[j] = temp;
+                    }
+                });
+            } else {
+                console.error("Failed to fetch next quiz: " + response.status);
+            }
+        });
+    }
+
+    function startFromBeginning() {
+        fetch("/nextQuiz?startIndex=0").then(function(response) {
+            if (response.ok) {
+                response.text().then(function(text) {
+                    document.documentElement.innerHTML = text;
+                });
+            } else {
+                console.log("Failed to load next flashcard: " + response.status);
+            }
+        });
+    }
+
+</script>
+
+</body>
+</html>

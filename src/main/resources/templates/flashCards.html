@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Flashcards</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #a8d674;
+            margin: 0;
+            padding: 0;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+        }
+
+        .head {
+            height: 10vh;
+            background-color: #4D4D4D;
+            color: white;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 2px solid #333333;
+            padding: 0 20px;
+        }
+
+        #flashcard-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(90vh - 120px);
+            margin-top: 50px;
+        }
+
+        #flashcard {
+            font-size: 3rem;
+            text-align: center;
+            border: 10px solid #4d4d4d;
+            padding: 20px;
+            max-width: 100%;
+            background-color: #D4FFA3;
+            box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            background-color: #4d4d4d;
+            display: flex;
+            justify-content: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        button {
+            font-size: 1.5rem;
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #4d4d4d;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #back-button {
+            position: fixed;
+            top: 0;
+            left: 0;
+            margin: 10px;
+            font-size: 2rem;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background-color: #4d4d4d;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        #back-button:hover {
+            transform: translateX(-2px);
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @media screen and (max-width: 768px) {
+            #flashcard {
+                font-size: 3rem;
+                padding: 10px;
+                border-width: 5px;
+            }
+            .button-container {
+                flex-wrap: wrap;
+                padding: 10px;
+            }
+            button {
+                font-size: 1.5rem;
+                margin: 5px;
+            padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<a href="/" id="back-button">&#8592;</a>
+<div class="head">
+    <h1>Fiszki</h1>
+</div>
+<div id="flashcard-container">
+    <div id="flashcard">
+        <p th:text="${currentWord}"></p>
+        <p style="display:none" th:text="${currentTranslation}" id="translation"></p>
+    </div>
+</div>
+<div class="button-container">
+    <button onclick="showTranslation()">Tłumaczenie</button>
+    <button onclick="nextFlashcard()">Następna fiszka</button>
+    <button onclick="startFromBeginning()">Od początku</button>
+</div>
+<script>
+    function showTranslation() {
+        document.getElementById("translation").style.display = "block";
+    }
+    function nextFlashcard() {
+        fetch("/nextFlashcard").then(function(response) {
+            if (response.ok) {
+                response.text().then(function(text) {
+                    document.documentElement.innerHTML = text;
+                });
+            } else {
+                console.log("Failed to load next flashcard: " + response.status);
+            }
+        });
+    }
+    function startFromBeginning() {
+        fetch("/nextFlashcard?startIndex=0").then(function(response) {
+            if (response.ok) {
+                response.text().then(function(text) {
+                    document.documentElement.innerHTML = text;
+                });
+            } else {
+                console.log("Failed to load next flashcard: " + response.status);
+            }
+        });
+    }
+</script>
+</body>
+</html>
